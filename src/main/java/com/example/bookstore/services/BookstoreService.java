@@ -31,11 +31,20 @@ public class BookstoreService {
         return new BookstoreDTO(bookstore);
     }
 
-    public BookstoreDTO delete(String id) {
-        var bookstore = bookstoreRepository.findById(Long.parseLong(id))
+    public BookstoreDTO delete(Long id) {
+        var bookstore = bookstoreRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         bookstoreRepository.delete(bookstore);
+        return new BookstoreDTO(bookstore);
+    }
+
+    public BookstoreDTO update(Long id, BookstoreDTO bookstoreDTO) {
+        var bookstore = bookstoreRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        bookstore.setName(bookstoreDTO.getName());
+        bookstore = bookstoreRepository.save(bookstore);
         return new BookstoreDTO(bookstore);
     }
 }
